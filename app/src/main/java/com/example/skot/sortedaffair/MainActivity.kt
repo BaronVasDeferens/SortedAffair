@@ -8,13 +8,14 @@ import android.widget.LinearLayout
 
 class MainActivity : AppCompatActivity(), View.OnTouchListener {
 
-    var flicker: FlickerView? = null
+    private lateinit var flicker: FlickerTwo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        flicker = FlickerView(this)
-        flicker!!.setOnTouchListener(this)
+        flicker = FlickerTwo(this)
+        flicker.background = resources.getDrawable(R.color.white)
+        flicker.setOnTouchListener(this)
         val mainLayout = findViewById<LinearLayout>(R.id.mainLayout)
         mainLayout.addView(flicker)
 
@@ -22,22 +23,9 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener {
 
 
     override fun onTouch(view: View?, motionEvent: MotionEvent?): Boolean {
-
-        flicker!!.setMotionEvent(motionEvent!!)
-        flicker!!.invalidate()
-
-        return when (motionEvent?.action) {
-
-            MotionEvent.ACTION_UP -> {
-                false
-            }
-            MotionEvent.ACTION_DOWN -> {
-                true
-            }
-            else -> {
-                false
-            }
-        }
-
+        view?.performClick()
+        val retVal =  view?.onTouchEvent(motionEvent) ?: false
+        view?.invalidate()
+        return retVal
     }
 }
